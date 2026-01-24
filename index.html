@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SewaOne - Official App | Sarkari Kaam Ab Ghar Baithe</title>
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        :root {
+            --primary: #003366;
+            --secondary: #2e7d32;
+            --accent: #f59e0b;
+            --white: #ffffff;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: var(--white);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .nav-btn {
+            background: var(--secondary);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 100px 5%;
+            text-align: center;
+            clip-path: ellipse(150% 100% at 50% 0%);
+        }
+
+        .hero h1 {
+            font-size: 46px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            opacity: 0.95;
+        }
+
+        .dl-btn {
+            background: white;
+            color: var(--primary);
+            padding: 18px 40px;
+            border-radius: 15px;
+            font-size: 22px;
+            font-weight: 800;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .dl-btn i {
+            font-size: 34px;
+            margin-right: 15px;
+            color: var(--secondary);
+        }
+
+        /* Services */
+        .services {
+            padding: 80px 5%;
+            text-align: center;
+        }
+
+        .services h2 {
+            font-size: 32px;
+            margin-bottom: 50px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+        }
+
+        .card i {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .card p {
+            color: #64748b;
+        }
+
+        /* Trust */
+        .trust {
+            background: #0f172a;
+            color: white;
+            padding: 60px 5%;
+            text-align: center;
+        }
+
+        .trust-box {
+            max-width: 700px;
+            margin: auto;
+            padding: 30px;
+            border: 1px dashed rgba(255,255,255,0.3);
+            border-radius: 15px;
+        }
+
+        /* Footer */
+        footer {
+            background: white;
+            padding: 40px 5%;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .social-links a {
+            font-size: 24px;
+            margin: 0 12px;
+            color: #94a3b8;
+        }
+
+        .copy {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .hero p { font-size: 16px; }
+            .dl-btn { font-size: 18px; padding: 15px 28px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="logo">Sewa<span>One</span></div>
+    <a href="sewaone.apk" class="nav-btn">Download</a>
+</nav>
+
+<header class="hero">
+    <h1>Sarkari Kaam Ho Jayega<br>Ab Ghar Baithe!</h1>
+    <p>
+        PAN Card, Voter ID, Aadhaar, Sarkari Jobs aur sabhi online forms —
+        ab bina cyber cafe jaaye, seedha SewaOne app par.
+    </p>
+
+    <div id="download">
+        <!-- ✅ WORKING APK DOWNLOAD BUTTON -->
+        <a href="sewaone.apk" class="dl-btn" download>
+            <i class="fab fa-android"></i>
+            Download Official App
+        </a>
+    </div>
+</header>
+
+<section class="services">
+    <h2>Hum Kya Karte Hain?</h2>
+
+    <div class="grid">
+        <div class="card">
+            <i class="fas fa-id-card"></i>
+            <h3>PAN & Voter ID</h3>
+            <p>Naya card ya correction – sab kaam ghar baithe, bina line lage.</p>
+        </div>
+
+        <div class="card">
+            <i class="fas fa-graduation-cap"></i>
+            <h3>Sarkari Jobs</h3>
+            <p>SSC, Railway, Banking aur anya forms sahi tarike se bharwayein.</p>
+        </div>
+
+        <div class="card">
+            <i class="fas fa-user-shield"></i>
+            <h3>Secure Services</h3>
+            <p>Aapke documents 100% safe aur private rehte hain.</p>
+        </div>
+    </div>
+</section>
+
+<section class="trust">
+    <div class="trust-box">
+        <p style="font-style: italic; font-size: 18px;">
+            “Cyber cafe ki bheed se chutkara mil gaya.
+            SewaOne ne kaam bahut aasan bana diya.”
+        </p>
+        <p style="color:#4ade80; font-weight:bold; margin-top:10px;">
+            – Happy User (Haryana)
+        </p>
+    </div>
+</section>
+
+<footer>
+    <div class="logo">Sewa<span>One</span></div>
+    <div class="social-links">
+        <a href="#"><i class="fab fa-whatsapp"></i></a>
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+    </div>
+    <p class="copy">© 2026 SewaOne Digital Services | Made for Digital India 🇮🇳</p>
+</footer>
+
+</body>
+</html>
