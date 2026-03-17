@@ -1,263 +1,1067 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SewaOne - Official App | Sarkari Kaam Ab Ghar Baithe</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SewaOne — Har Sarkari Kaam, Ghar Baithe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800;900&family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<style>
+/* ── Variables ─────────────────────────────────────────── */
+:root {
+  --navy:    #002855;
+  --blue:    #003d99;
+  --green:   #00875a;
+  --gold:    #f5a623;
+  --light:   #f0f4ff;
+  --white:   #ffffff;
+  --text:    #1a2340;
+  --muted:   #5c6b8a;
+  --border:  rgba(0,40,85,0.12);
+  --radius:  18px;
+  --shadow:  0 8px 40px rgba(0,40,85,0.13);
+}
 
-    <style>
-        /* Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+/* ── Reset ─────────────────────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
-        body {
-            background-color: #f8fafc;
-            color: #1e293b;
-            line-height: 1.6;
-        }
+html { scroll-behavior: smooth; }
 
-        :root {
-            --primary: #003366;
-            --secondary: #2e7d32;
-            --accent: #f59e0b;
-            --white: #ffffff;
-        }
+body {
+  font-family: 'Noto Sans', sans-serif;
+  background: #f7f9ff;
+  color: var(--text);
+  overflow-x: hidden;
+}
 
-        /* Navbar */
-        .navbar {
-            background: var(--white);
-            padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+h1,h2,h3,h4 { font-family: 'Baloo 2', cursive; }
 
-        .logo {
-            font-size: 26px;
-            font-weight: 900;
-            color: var(--primary);
-        }
+/* ── Update Popup ────────────────────────────────────────
+   Jab admin version.json update kare, popup auto show hoga
+──────────────────────────────────────────────────────── */
+#update-popup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,20,60,0.7);
+  backdrop-filter: blur(6px);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+#update-popup.show { display: flex; }
 
-        .logo span {
-            color: var(--secondary);
-        }
+.popup-card {
+  background: var(--white);
+  border-radius: 28px;
+  padding: 40px 32px 32px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 30px 80px rgba(0,40,85,0.25);
+  animation: popUp 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  position: relative;
+}
 
-        .nav-btn {
-            background: var(--secondary);
-            color: white;
-            padding: 10px 22px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-        }
+.popup-badge {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--gold), #ff9500);
+  color: white;
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  font-size: 12px;
+  padding: 6px 18px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 14px rgba(245,166,35,0.4);
+}
 
-        /* Hero */
-        .hero {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 100px 5%;
-            text-align: center;
-            clip-path: ellipse(150% 100% at 50% 0%);
-        }
+.popup-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--navy), var(--blue));
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 36px;
+  box-shadow: 0 12px 30px rgba(0,61,153,0.3);
+}
 
-        .hero h1 {
-            font-size: 46px;
-            margin-bottom: 20px;
-        }
+.popup-title {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
 
-        .hero p {
-            font-size: 20px;
-            max-width: 800px;
-            margin: 0 auto 40px;
-            opacity: 0.95;
-        }
+.popup-version {
+  display: inline-block;
+  background: var(--light);
+  color: var(--blue);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
 
-        .dl-btn {
-            background: white;
-            color: var(--primary);
-            padding: 18px 40px;
-            border-radius: 15px;
-            font-size: 22px;
-            font-weight: 800;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
+.popup-desc {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
 
-        .dl-btn i {
-            font-size: 34px;
-            margin-right: 15px;
-            color: var(--secondary);
-        }
+.popup-changes {
+  background: var(--light);
+  border-radius: 14px;
+  padding: 16px;
+  margin: 16px 0;
+  text-align: left;
+}
 
-        /* Services */
-        .services {
-            padding: 80px 5%;
-            text-align: center;
-        }
+.popup-changes h4 {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 10px;
+  font-family: 'Noto Sans', sans-serif;
+}
 
-        .services h2 {
-            font-size: 32px;
-            margin-bottom: 50px;
-        }
+.popup-changes li {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  padding-left: 20px;
+  position: relative;
+  list-style: none;
+}
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
+.popup-changes li::before {
+  content: "✅";
+  position: absolute;
+  left: 0;
+  font-size: 11px;
+  top: 1px;
+}
 
-        .card {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            transition: 0.3s;
-        }
+.popup-dl-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--navy), var(--blue));
+  color: white;
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  font-size: 16px;
+  padding: 16px 28px;
+  border-radius: var(--radius);
+  text-decoration: none;
+  width: 100%;
+  margin-bottom: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 8px 24px rgba(0,61,153,0.3);
+}
+.popup-dl-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,61,153,0.4); }
 
-        .card:hover {
-            transform: translateY(-8px);
-        }
+.popup-skip {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 8px;
+  width: 100%;
+  font-family: 'Noto Sans', sans-serif;
+}
+.popup-skip:hover { color: var(--text); }
 
-        .card i {
-            font-size: 40px;
-            color: var(--primary);
-            margin-bottom: 20px;
-        }
+@keyframes popUp {
+  from { transform: scale(0.8) translateY(20px); opacity: 0; }
+  to   { transform: scale(1) translateY(0); opacity: 1; }
+}
 
-        .card h3 {
-            margin-bottom: 15px;
-            font-size: 22px;
-        }
+/* ── Navbar ─────────────────────────────────────────────── */
+.navbar {
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(12px);
+  padding: 14px 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid var(--border);
+}
 
-        .card p {
-            color: #64748b;
-        }
+.logo {
+  font-family: 'Baloo 2', cursive;
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--navy);
+}
+.logo span { color: var(--green); }
 
-        /* Trust */
-        .trust {
-            background: #0f172a;
-            color: white;
-            padding: 60px 5%;
-            text-align: center;
-        }
+.nav-right { display: flex; align-items: center; gap: 12px; }
 
-        .trust-box {
-            max-width: 700px;
-            margin: auto;
-            padding: 30px;
-            border: 1px dashed rgba(255,255,255,0.3);
-            border-radius: 15px;
-        }
+.nav-dl {
+  background: linear-gradient(135deg, var(--navy), var(--blue));
+  color: white;
+  padding: 10px 22px;
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: transform 0.2s;
+  box-shadow: 0 4px 14px rgba(0,61,153,0.25);
+}
+.nav-dl:hover { transform: translateY(-1px); }
 
-        /* Footer */
-        footer {
-            background: white;
-            padding: 40px 5%;
-            text-align: center;
-            border-top: 1px solid #e2e8f0;
-        }
+/* ── Hero ──────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(160deg, var(--navy) 0%, #004494 60%, var(--green) 100%);
+  padding: 90px 6% 120px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
 
-        .social-links a {
-            font-size: 24px;
-            margin: 0 12px;
-            color: #94a3b8;
-        }
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 50%, rgba(0,135,90,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 80% 30%, rgba(255,255,255,0.06) 0%, transparent 60%);
+}
 
-        .copy {
-            margin-top: 15px;
-            font-size: 14px;
-            color: #94a3b8;
-        }
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 18px;
+  border-radius: 25px;
+  margin-bottom: 28px;
+  backdrop-filter: blur(6px);
+  animation: slideDown 0.6s ease both;
+}
 
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 32px; }
-            .hero p { font-size: 16px; }
-            .dl-btn { font-size: 18px; padding: 15px 28px; }
-        }
-    </style>
+.hero h1 {
+  font-size: clamp(32px, 5vw, 58px);
+  font-weight: 900;
+  color: white;
+  line-height: 1.15;
+  margin-bottom: 20px;
+  animation: slideDown 0.7s ease 0.1s both;
+}
+
+.hero h1 span {
+  color: var(--gold);
+  display: block;
+}
+
+.hero p {
+  font-size: clamp(15px, 2vw, 19px);
+  color: rgba(255,255,255,0.85);
+  max-width: 620px;
+  margin: 0 auto 40px;
+  line-height: 1.7;
+  animation: slideDown 0.7s ease 0.2s both;
+}
+
+.hero-btns {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: slideDown 0.7s ease 0.3s both;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: white;
+  color: var(--navy);
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  font-size: 18px;
+  padding: 18px 36px;
+  border-radius: var(--radius);
+  text-decoration: none;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 18px 50px rgba(0,0,0,0.28); }
+.btn-primary i { color: var(--green); font-size: 24px; }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.12);
+  border: 1.5px solid rgba(255,255,255,0.35);
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 18px 28px;
+  border-radius: var(--radius);
+  text-decoration: none;
+  backdrop-filter: blur(6px);
+  transition: background 0.2s;
+}
+.btn-secondary:hover { background: rgba(255,255,255,0.2); }
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 60px;
+  flex-wrap: wrap;
+  animation: slideDown 0.7s ease 0.4s both;
+}
+
+.stat {
+  text-align: center;
+  color: white;
+}
+.stat-num {
+  font-family: 'Baloo 2', cursive;
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--gold);
+  display: block;
+}
+.stat-label {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+/* ── Wave ─────────────────────────────────────────────── */
+.wave {
+  margin-top: -2px;
+  line-height: 0;
+}
+.wave svg { display: block; }
+
+/* ── Services ────────────────────────────────────────── */
+.section {
+  padding: 80px 6%;
+}
+
+.section-tag {
+  display: inline-block;
+  background: var(--light);
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 800;
+  padding: 6px 16px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.section-title {
+  font-size: clamp(26px, 3.5vw, 40px);
+  font-weight: 900;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+
+.section-sub {
+  color: var(--muted);
+  font-size: 16px;
+  margin-bottom: 50px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.svc-card {
+  background: white;
+  border-radius: 22px;
+  padding: 34px 28px;
+  border: 1px solid var(--border);
+  transition: transform 0.25s, box-shadow 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+
+.svc-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--navy), var(--blue));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+  border-radius: 0 0 22px 22px;
+}
+
+.svc-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+.svc-card:hover::after { transform: scaleX(1); }
+
+.svc-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  margin-bottom: 18px;
+}
+
+.svc-card h3 {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.svc-card p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* ── How it works ─────────────────────────────────────── */
+.how-section {
+  background: linear-gradient(135deg, #f0f4ff, #e8f5e9);
+  padding: 80px 6%;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+  margin-top: 50px;
+}
+
+.step {
+  background: white;
+  border-radius: 20px;
+  padding: 30px 24px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,40,85,0.07);
+  position: relative;
+}
+
+.step-num {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--navy), var(--blue));
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Baloo 2', cursive;
+  font-size: 22px;
+  font-weight: 900;
+  color: white;
+  margin: 0 auto 16px;
+  box-shadow: 0 6px 18px rgba(0,61,153,0.28);
+}
+
+.step h3 {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.step p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* ── Testimonials ─────────────────────────────────────── */
+.testimonials {
+  padding: 80px 6%;
+  background: white;
+}
+
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 50px;
+}
+
+.testi-card {
+  background: var(--light);
+  border-radius: 20px;
+  padding: 28px;
+  border: 1px solid var(--border);
+}
+
+.stars { color: var(--gold); font-size: 14px; margin-bottom: 12px; }
+
+.testi-text {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.7;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.testi-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.testi-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.testi-name { font-weight: 800; font-size: 14px; color: var(--navy); }
+.testi-loc { font-size: 12px; color: var(--muted); }
+
+/* ── Download CTA ─────────────────────────────────────── */
+.cta-section {
+  background: linear-gradient(135deg, var(--navy) 0%, #004494 60%, var(--green) 100%);
+  padding: 80px 6%;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 50% at 50% 50%, rgba(255,255,255,0.06) 0%, transparent 70%);
+}
+
+.cta-section h2 {
+  font-size: clamp(28px, 4vw, 46px);
+  font-weight: 900;
+  color: white;
+  margin-bottom: 16px;
+}
+
+.cta-section p {
+  color: rgba(255,255,255,0.8);
+  font-size: 17px;
+  margin-bottom: 40px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-dl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  color: var(--navy);
+  font-family: 'Baloo 2', cursive;
+  font-weight: 900;
+  font-size: 20px;
+  padding: 20px 44px;
+  border-radius: var(--radius);
+  text-decoration: none;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-bottom: 20px;
+}
+.cta-dl-btn:hover { transform: translateY(-3px); box-shadow: 0 20px 50px rgba(0,0,0,0.28); }
+.cta-dl-btn i { color: var(--green); font-size: 28px; }
+
+.cta-note {
+  color: rgba(255,255,255,0.65);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* ── Footer ───────────────────────────────────────────── */
+footer {
+  background: var(--navy);
+  color: rgba(255,255,255,0.7);
+  padding: 50px 6% 30px;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.footer-brand .logo { color: white; font-size: 28px; }
+.footer-brand .logo span { color: var(--gold); }
+.footer-brand p { font-size: 13px; margin-top: 8px; max-width: 250px; line-height: 1.6; }
+
+.footer-links h4 {
+  font-family: 'Baloo 2', cursive;
+  color: white;
+  font-size: 16px;
+  margin-bottom: 14px;
+}
+
+.footer-links a {
+  display: block;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  font-size: 13px;
+  margin-bottom: 8px;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--gold); }
+
+.social-row { display: flex; gap: 12px; margin-top: 16px; }
+
+.social-btn {
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background 0.2s, transform 0.2s;
+}
+.social-btn:hover { background: var(--gold); transform: translateY(-2px); }
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.footer-bottom .logo { font-size: 18px; }
+
+/* ── Animations ───────────────────────────────────────── */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Responsive ───────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero { padding: 70px 5% 90px; }
+  .hero-stats { gap: 24px; }
+  .section, .how-section, .testimonials, .cta-section { padding: 60px 5%; }
+  .footer-top { flex-direction: column; }
+}
+</style>
 </head>
 
 <body>
 
+<!-- ══════════════════════════════════════════════════════
+     UPDATE POPUP — Auto-dikhega jab naya version aaye
+══════════════════════════════════════════════════════ -->
+<div id="update-popup">
+  <div class="popup-card">
+    <div class="popup-badge">🆕 NEW UPDATE</div>
+    <div class="popup-icon">🚀</div>
+    <h2 class="popup-title">Naya Update Aaya!</h2>
+    <div class="popup-version" id="popup-version">Version 1.0.0</div>
+    <p class="popup-desc">Behtar experience ke liye latest version download karein.</p>
+    <div class="popup-changes">
+      <h4>Is update mein kya naya hai:</h4>
+      <ul id="popup-changes-list">
+        <li>Loading...</li>
+      </ul>
+    </div>
+    <a href="SewaOne.apk" id="popup-dl-btn" class="popup-dl-btn" download>
+      <i class="fab fa-android"></i>
+      Download v<span id="popup-v-btn">1.0.0</span> — Free
+    </a>
+    <button class="popup-skip" onclick="skipUpdate()">Baad mein yaad dilao →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     NAVBAR
+══════════════════════════════════════════════════════ -->
 <nav class="navbar">
-    <div class="logo">Sewa<span>One</span></div>
-    <a href="sewaone.apk" class="nav-btn">Download</a>
+  <div class="logo">Sewa<span>One</span></div>
+  <div class="nav-right">
+    <a href="SewaOne.apk" class="nav-dl" download>
+      <i class="fab fa-android"></i> Download Free
+    </a>
+  </div>
 </nav>
 
+<!-- ══════════════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════════════ -->
 <header class="hero">
-    <h1>Sarkari Kaam Ho Jayega<br>Ab Ghar Baithe!</h1>
-    <p>
-        PAN Card, Voter ID, Aadhaar, Sarkari Jobs aur sabhi online forms —
-        ab bina cyber cafe jaaye, seedha SewaOne app par.
-    </p>
+  <div class="hero-badge">
+    <i class="fas fa-shield-alt"></i>
+    100% Free · Secure · Made for Bharat
+  </div>
 
-    <div id="download">
-        <!-- ✅ WORKING APK DOWNLOAD BUTTON -->
-        <a href="sewaone.apk" class="dl-btn" download>
-            <i class="fab fa-android"></i>
-            Download Official App
-        </a>
+  <h1>
+    Sarkari Kaam ab
+    <span>Ghar Baithe! 🇮🇳</span>
+  </h1>
+
+  <p>
+    PAN Card, Voter ID, Aadhaar, Passport, Sarkari Jobs —
+    SewaOne App se sab karo bina cyber cafe jaaye.
+    Expert team aapka form bharegi.
+  </p>
+
+  <div class="hero-btns">
+    <a href="SewaOne.apk" class="btn-primary" download>
+      <i class="fab fa-android"></i>
+      Download Free App
+    </a>
+    <a href="#services" class="btn-secondary">
+      <i class="fas fa-th-large"></i>
+      Hamare Services
+    </a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">10,000+</span>
+      <span class="stat-label">Happy Users</span>
     </div>
+    <div class="stat">
+      <span class="stat-num">50+</span>
+      <span class="stat-label">Sarkari Services</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">100%</span>
+      <span class="stat-label">Free Download</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">4.8 ⭐</span>
+      <span class="stat-label">User Rating</span>
+    </div>
+  </div>
 </header>
 
-<section class="services">
-    <h2>Hum Kya Karte Hain?</h2>
+<div class="wave">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#f7f9ff"/>
+  </svg>
+</div>
 
-    <div class="grid">
-        <div class="card">
-            <i class="fas fa-id-card"></i>
-            <h3>PAN & Voter ID</h3>
-            <p>Naya card ya correction – sab kaam ghar baithe, bina line lage.</p>
-        </div>
+<!-- ══════════════════════════════════════════════════════
+     SERVICES
+══════════════════════════════════════════════════════ -->
+<section class="section" id="services">
+  <div style="text-align:center">
+    <div class="section-tag">Our Services</div>
+    <h2 class="section-title reveal">Hum Kya Karte Hain?</h2>
+    <p class="section-sub reveal">Sab kuch ek jagah — zero paperwork, zero queue</p>
+  </div>
 
-        <div class="card">
-            <i class="fas fa-graduation-cap"></i>
-            <h3>Sarkari Jobs</h3>
-            <p>SSC, Railway, Banking aur anya forms sahi tarike se bharwayein.</p>
-        </div>
-
-        <div class="card">
-            <i class="fas fa-user-shield"></i>
-            <h3>Secure Services</h3>
-            <p>Aapke documents 100% safe aur private rehte hain.</p>
-        </div>
+  <div class="services-grid">
+    <div class="svc-card reveal">
+      <div class="svc-icon" style="background:#e8f5e9">💼</div>
+      <h3>Sarkari Jobs</h3>
+      <p>SSC, Railway, Banking, Police — expert team aapka form sahi tarike se bharegi. Result aur admit card bhi milega notification pe.</p>
     </div>
+    <div class="svc-card reveal">
+      <div class="svc-icon" style="background:#e3f2fd">🪪</div>
+      <h3>PAN & Voter ID</h3>
+      <p>Naya card banwao ya correction karwao. Documents upload karo, baki sab hum karenge.</p>
+    </div>
+    <div class="svc-card reveal">
+      <div class="svc-icon" style="background:#fff3e0">🛂</div>
+      <h3>Passport</h3>
+      <p>Passport apply ya renew — documents prepare karo, expert guidance ke saath.</p>
+    </div>
+    <div class="svc-card reveal">
+      <div class="svc-icon" style="background:#fce4ec">🏛️</div>
+      <h3>Govt Schemes</h3>
+      <p>PM Awas, Kisan Samman, Ujjwala — sahi scheme ke liye apply karein, hum guide karenge.</p>
+    </div>
+    <div class="svc-card reveal">
+      <div class="svc-icon" style="background:#f3e5f5">🎓</div>
+      <h3>Student Services</h3>
+      <p>Scholarship, admit card, result — students ke liye sabse zaroori updates ek jagah.</p>
+    </div>
+    <div class="svc-card reveal">
+      <div class="svc-icon" style="background:#e0f7fa">🔒</div>
+      <h3>100% Secure</h3>
+      <p>Aapke documents safe hain — SHA-256 encryption, no data sharing, ever.</p>
+    </div>
+  </div>
 </section>
 
-<section class="trust">
-    <div class="trust-box">
-        <p style="font-style: italic; font-size: 18px;">
-            “Cyber cafe ki bheed se chutkara mil gaya.
-            SewaOne ne kaam bahut aasan bana diya.”
-        </p>
-        <p style="color:#4ade80; font-weight:bold; margin-top:10px;">
-            – Happy User (Haryana)
-        </p>
+<!-- ══════════════════════════════════════════════════════
+     HOW IT WORKS
+══════════════════════════════════════════════════════ -->
+<section class="how-section" id="how">
+  <div style="text-align:center">
+    <div class="section-tag">Simple Process</div>
+    <h2 class="section-title reveal">Kaise Kaam Karta Hai?</h2>
+    <p class="section-sub reveal">Sirf 3 steps mein kaam ho jaata hai</p>
+  </div>
+
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num">1</div>
+      <h3>App Download Karo</h3>
+      <p>Android app download karo aur free mein register karo — 2 minute ka kaam</p>
     </div>
+    <div class="step reveal">
+      <div class="step-num">2</div>
+      <h3>Service Choose Karo</h3>
+      <p>Job apply karo ya koi bhi sarkari service choose karo — documents upload karo</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">3</div>
+      <h3>Team Kaam Karegi</h3>
+      <p>Expert team aapka form bharegi — app pe live tracking milegi</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">4</div>
+      <h3>Notification Pao</h3>
+      <p>Result, admit card, ya koi update — seedha phone pe notification</p>
+    </div>
+  </div>
 </section>
 
+<!-- ══════════════════════════════════════════════════════
+     TESTIMONIALS
+══════════════════════════════════════════════════════ -->
+<section class="testimonials">
+  <div style="text-align:center">
+    <div class="section-tag">User Reviews</div>
+    <h2 class="section-title reveal">Log Kya Kehte Hain?</h2>
+  </div>
+
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"Cyber cafe ki bheed se chutkara mil gaya. SSC form ghar baithe bhara. Expert ne sab sahi kiya!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:#e8f5e9">😊</div>
+        <div><div class="testi-name">Rahul Sharma</div><div class="testi-loc">Hisar, Haryana</div></div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"Voter ID correction ke liye 2 baar chakkar kaate the. SewaOne se ghar baithe ho gaya. Ekdam best!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:#e3f2fd">👩</div>
+        <div><div class="testi-name">Sunita Devi</div><div class="testi-loc">Lucknow, UP</div></div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"Railway form apply kiya, admit card notification pe mila. App bahut smooth hai. Highly recommend!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:#fff3e0">🧑</div>
+        <div><div class="testi-name">Amit Kumar</div><div class="testi-loc">Patna, Bihar</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     DOWNLOAD CTA
+══════════════════════════════════════════════════════ -->
+<section class="cta-section" id="download">
+  <h2 class="reveal">Abhi Download Karo — Free Hai!</h2>
+  <p class="reveal">Lakhs of users already use kar rahe hain. Aap kyun peeche hain?</p>
+  <div>
+    <a href="SewaOne.apk" class="cta-dl-btn" download>
+      <i class="fab fa-android"></i>
+      Download SewaOne App
+    </a>
+  </div>
+  <p class="cta-note reveal">
+    <i class="fas fa-shield-alt"></i>
+    100% Safe · No Ads · Free Forever
+  </p>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════════ -->
 <footer>
-    <div class="logo">Sewa<span>One</span></div>
-    <div class="social-links">
-        <a href="#"><i class="fab fa-whatsapp"></i></a>
-        <a href="#"><i class="fab fa-facebook"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo">Sewa<span>One</span></div>
+      <p>Har Sarkari Kaam, Ek App. Made with ❤️ for Bharat.</p>
+      <div class="social-row">
+        <a href="#" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+        <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+      </div>
     </div>
-    <p class="copy">© 2026 SewaOne Digital Services | Made for Digital India 🇮🇳</p>
+    <div class="footer-links">
+      <h4>Services</h4>
+      <a href="#">Sarkari Jobs</a>
+      <a href="#">PAN Card</a>
+      <a href="#">Voter ID</a>
+      <a href="#">Passport</a>
+      <a href="#">Govt Schemes</a>
+    </div>
+    <div class="footer-links">
+      <h4>Company</h4>
+      <a href="#">About Us</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">Contact Us</a>
+    </div>
+    <div class="footer-links">
+      <h4>Download</h4>
+      <a href="SewaOne.apk" download>
+        <i class="fab fa-android"></i> Android APK
+      </a>
+      <a href="#">📞 Support: 1800-XXX-XXXX</a>
+      <a href="#">✉️ help@sewaone.in</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="logo">Sewa<span style="color:var(--gold)">One</span></div>
+    <span>© 2026 SewaOne Digital Services 🇮🇳</span>
+    <span>Made for Bharat</span>
+  </div>
 </footer>
+
+<!-- ══════════════════════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════════════════════ -->
+<script>
+// ── Scroll reveal ──────────────────────────────────────
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => io.observe(el));
+
+// ══════════════════════════════════════════════════════
+// AUTO UPDATE SYSTEM
+// ──────────────────────────────────────────────────────
+// Kaise kaam karta hai:
+// 1. version.json file banao apni site pe
+// 2. Jab bhi naya APK upload karo — version.json update karo
+// 3. User jab site kholegaa — version check hoga
+// 4. Agar naya version hai — popup auto show hoga
+// ══════════════════════════════════════════════════════
+
+const CURRENT_VERSION = '1.0.0'; // ← Yeh current APK version hai
+
+async function checkForUpdate() {
+  try {
+    // version.json fetch karo (same folder mein hona chahiye)
+    const res = await fetch('version.json?t=' + Date.now());
+    if (!res.ok) return;
+    const data = await res.json();
+
+    const latest  = data.version || '1.0.0';
+    const apkUrl  = data.apkUrl  || 'SewaOne.apk';
+    const changes = data.changes || ['Bug fixes aur performance improvements'];
+    const desc    = data.description || 'Behtar experience ke liye update karein.';
+
+    // Version compare
+    if (isNewerVersion(latest, CURRENT_VERSION)) {
+      // Check karo user ne skip toh nahi kiya
+      const skipped = localStorage.getItem('skipped_version');
+      if (skipped === latest) return;
+
+      // Popup fill karo
+      document.getElementById('popup-version').textContent  = 'Version ' + latest;
+      document.getElementById('popup-v-btn').textContent    = latest;
+      document.getElementById('popup-dl-btn').href          = apkUrl;
+      document.querySelector('.popup-desc').textContent     = desc;
+
+      const list = document.getElementById('popup-changes-list');
+      list.innerHTML = changes.map(c => `<li>${c}</li>`).join('');
+
+      // Popup show karo
+      setTimeout(() => {
+        document.getElementById('update-popup').classList.add('show');
+      }, 1500);
+    }
+  } catch (e) {
+    // version.json nahi mila — koi baat nahi
+  }
+}
+
+function isNewerVersion(latest, current) {
+  const a = latest.split('.').map(Number);
+  const b = current.split('.').map(Number);
+  for (let i = 0; i < 3; i++) {
+    if ((a[i]||0) > (b[i]||0)) return true;
+    if ((a[i]||0) < (b[i]||0)) return false;
+  }
+  return false;
+}
+
+function skipUpdate() {
+  const v = document.getElementById('popup-version').textContent.replace('Version ', '');
+  localStorage.setItem('skipped_version', v);
+  document.getElementById('update-popup').classList.remove('show');
+}
+
+// Page load pe check karo
+checkForUpdate();
+</script>
 
 </body>
 </html>
