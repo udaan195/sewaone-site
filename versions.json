@@ -1,11 +1,11 @@
 [
   {
-    "version": "1.0.0",
+    "version": "2.0.0",
     "date": "18 Mar 2026",
-    "apkFile": "SewaOne_v1.0.0.apk",
-    "description": "SewaOne v1.0.0",
+    "apkFile": "SewaOne_v2.0.0.apk",
+    "description": "SewaOne v2.0.0",
     "changes": [
-      "Pehla version"
+      "Update New Feature"
     ],
     "isLatest": true
   },
@@ -13,17 +13,7 @@
     "version": "1.0.0",
     "date": "18 Mar 2026",
     "apkFile": "SewaOne_v1.0.0.apk",
-    "description": "SewaOne v1.0.0",
-    "changes": [
-      "Push fix",
-      "UI update"
-    ],
-    "isLatest": false
-  },
-  {
-    "version": "1.0.0",
-    "date": "18 Mar 2026",
-    "apkFile": "SewaOne_v1.0.0.apk",
+    "description": "SewaOne pehla official version",
     "changes": [
       "Push notifications fixed",
       "Home screen redesign",
