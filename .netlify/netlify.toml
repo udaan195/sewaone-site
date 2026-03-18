@@ -9,7 +9,6 @@ redirects = []
 [build]
 publish = "/data/data/com.termux/files/home/sewaone-site"
 publishOrigin = "default"
-base = "/data/data/com.termux/files/home/sewaone-site"
 
 [build.environment]
 

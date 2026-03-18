@@ -1,0 +1,25 @@
+[
+  {
+    "version": "1.0.0",
+    "date": "18 Mar 2026",
+    "apkFile": "SewaOne_v1.0.0.apk",
+    "description": "SewaOne v1.0.0",
+    "changes": [
+      "Push fix",
+      "UI update"
+    ],
+    "isLatest": true
+  },
+  {
+    "version": "1.0.0",
+    "date": "18 Mar 2026",
+    "apkFile": "SewaOne_v1.0.0.apk",
+    "changes": [
+      "Push notifications fixed",
+      "Home screen redesign",
+      "Job bookmark feature",
+      "Bug fixes"
+    ],
+    "isLatest": false
+  }
+]
