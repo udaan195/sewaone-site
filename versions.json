@@ -1,5 +1,15 @@
 [
   {
+    "version": "2.1.0",
+    "date": "04 Apr 2026",
+    "apkFile": "SewaOne_v2.1.0.apk",
+    "description": "SewaOne v2.1.0",
+    "changes": [
+      "New Feature Membership Implement"
+    ],
+    "isLatest": true
+  },
+  {
     "version": "2.0.0",
     "date": "18 Mar 2026",
     "apkFile": "SewaOne_v2.0.0.apk",
@@ -7,7 +17,7 @@
     "changes": [
       "Update New Feature"
     ],
-    "isLatest": true
+    "isLatest": false
   },
   {
     "version": "1.0.0",
